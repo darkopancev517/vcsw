@@ -6,6 +6,7 @@
 2. Install python
 3. Install python-pip
 4. sudo pip install requests click
+5. sudo apt-get install gcc-multilib g++-multilib
 
 Set **ARMGCC_DIR** environment variable to tell the build system where is your compiler:  
 

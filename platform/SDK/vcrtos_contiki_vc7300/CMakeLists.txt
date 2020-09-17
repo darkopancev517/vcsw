@@ -19,7 +19,7 @@ ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/contiki-ng/os/sys)
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/mbed-client-pal/Source)
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/mbed-client-pal/Source/PAL-Impl)
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/mbed-client-pal/Source/PAL-Impl/Services-API)
-ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/mbed-client-pal/Source/port/Platform-API)
+ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/mbed-client-pal/Source/Port/Platform-API)
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/mbed-trace)
 
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos)
