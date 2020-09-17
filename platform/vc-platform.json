@@ -5,7 +5,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.1.9"
+      "version": "1.2.0"
     },
     "sdk": {
       "name": "vcrtos_linux",
@@ -13,20 +13,20 @@
     },
     "middleware": {
       "vcdrivers": {
-        "version": "1.1.3",
+        "version": "1.1.4",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcdrivers.git",
-          "tag": "vcdrivers-1.1.3"
+          "tag": "vcdrivers-1.1.4"
         },
         "to": "SDK/vcrtos_linux/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.1.9",
+        "version": "1.2.0",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcrtos.git",
-          "tag": "vcrtos-1.1.9"
+          "tag": "vcrtos-1.2.0"
         },
         "to": "SDK/vcrtos_linux/vcrtos"
       }
@@ -38,7 +38,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.1.9"
+      "version": "1.2.0"
     },
     "sdk": {
       "name": "vcrtos_vc7300",
@@ -46,20 +46,20 @@
     },
     "middleware": {
       "vcdrivers": {
-        "version": "1.1.3",
+        "version": "1.1.4",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcdrivers.git",
-          "tag": "vcdrivers-1.1.3"
+          "tag": "vcdrivers-1.1.4"
         },
         "to": "SDK/vcrtos_vc7300/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.1.9",
+        "version": "1.2.0",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcrtos.git",
-          "tag": "vcrtos-1.1.9"
+          "tag": "vcrtos-1.2.0"
         },
         "to": "SDK/vcrtos_vc7300/vcrtos"
       }
@@ -79,11 +79,11 @@
     },
     "middleware": {
       "vcdrivers": {
-        "version": "1.1.3",
+        "version": "1.1.4",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcdrivers.git",
-          "tag": "vcdrivers-1.1.3"
+          "tag": "vcdrivers-1.1.4"
         },
         "to": "SDK/bare_vc7300/vcdrivers"
       }
@@ -103,11 +103,11 @@
     },
     "middleware": {
       "vcdrivers": {
-        "version": "1.1.3",
+        "version": "1.1.4",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcdrivers.git",
-          "tag": "vcdrivers-1.1.3"
+          "tag": "vcdrivers-1.1.4"
         },
         "to": "SDK/freertos_vc7300/vcdrivers"
       },
@@ -131,7 +131,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.1.9"
+      "version": "1.2.0"
     },
     "sdk": {
       "name": "vcrtos_contiki_vc7300",
@@ -139,20 +139,20 @@
     },
     "middleware": {
       "vcdrivers": {
-        "version": "1.1.3",
+        "version": "1.1.4",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcdrivers.git",
-          "tag": "vcdrivers-1.1.3"
+          "tag": "vcdrivers-1.1.4"
         },
         "to": "SDK/vcrtos_contiki_vc7300/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.1.9",
+        "version": "1.2.0",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcrtos.git",
-          "tag": "vcrtos-1.1.9"
+          "tag": "vcrtos-1.2.0"
         },
         "to": "SDK/vcrtos_contiki_vc7300/vcrtos"
       },
@@ -182,7 +182,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.1.9"
+      "version": "1.2.0"
     },
     "sdk": {
       "name": "vcrtos_contiki_linux",
@@ -190,20 +190,20 @@
     },
     "middleware": {
       "vcdrivers": {
-        "version": "1.1.3",
+        "version": "1.1.4",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcdrivers.git",
-          "tag": "vcdrivers-1.1.3"
+          "tag": "vcdrivers-1.1.4"
         },
         "to": "SDK/vcrtos_contiki_linux/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.1.9",
+        "version": "1.2.0",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/darko.pancev/vcrtos.git",
-          "tag": "vcrtos-1.1.9"
+          "tag": "vcrtos-1.2.0"
         },
         "to": "SDK/vcrtos_contiki_linux/vcrtos"
       },
