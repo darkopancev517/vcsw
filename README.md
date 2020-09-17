@@ -4,6 +4,8 @@
 
 1. Install cmake
 2. Install python
+3. Install python-pip
+4. sudo pip install requests click
 
 Set **ARMGCC_DIR** environment variable to tell the build system where is your compiler:  
 
