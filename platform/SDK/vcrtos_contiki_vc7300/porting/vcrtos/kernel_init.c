@@ -25,6 +25,7 @@
 #include <vcrtos/cpu.h>
 #include <vcrtos/instance.h>
 #include <vcrtos/thread.h>
+#include <vcrtos/heap.h>
 
 #if VCRTOS_CONFIG_ZTIMER_ENABLE
 #include <vcrtos/ztimer.h>
@@ -72,6 +73,8 @@ char _idle_stack[VCRTOS_CONFIG_IDLE_THREAD_STACK_SIZE];
 void kernel_init(void)
 {
     (void) cpu_irq_disable();
+
+    (void) heap_init();
 
     instance_t *instance = instance_init_single();
 
