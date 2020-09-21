@@ -25,19 +25,22 @@ All projects available are list under **platform/SDK** directory.
 
 Bare system (Non-RTOS) VC7300 (Sirius)
 
-Deploy the source code and generate build system files:
+Deploy the source code and generate build directory:
 ```
 python platform/vc-platform.py --verbose deploy --target=bare_vc7300 generate
 ```
 
-Build the project:
+Build project cmake build system:
 ```
 cd __bare_vc7300
 
 mkdir build && cd build
 
 cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./../platform/SDK/bare_vc7300/ARMGCC.cmake
+```
 
+Compile project:
+```
 make
 ```
 
@@ -70,19 +73,22 @@ in this case would be __bare_vc7300/build/Debug/bare_vc7300.bin
 
 FreeRTOS minimal porting to VC7300 (Sirius)
 
-Deploy the source code and generate build system files:
+Deploy the source code and generate build directory:
 ```
 python platform/vc-platform.py --verbose deploy --target=freertos_vc7300 generate
 ```
 
-Build the project:
+Build project cmake build system:
 ```
 cd __freertos_vc7300
 
 mkdir build && cd build
 
 cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./../platform/SDK/freertos_vc7300/ARMGCC.cmake
+```
 
+Compile project:
+```
 make
 ```
 
@@ -91,19 +97,22 @@ make
 
 RTOS version of contiki-ng with VCRTOS kernel running on Linux
 
-Deploy the source code and generate build system files:
+Deploy the source code and generate build directory:
 ```
 python platform/vc-platform.py --verbose deploy --target=vcrtos_contiki_linux generate
 ```
 
-Build the project:
+Build project cmake build system:
 ```
 cd __vcrtos_contiki_linux
 
 mkdir build && cd build
 
 cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./../platform/SDK/vcrtos_contiki_linux/GCC.cmake
+```
 
+Compile project:
+```
 make
 ```
 
@@ -122,19 +131,22 @@ to reset your terminal.
 
 RTOS version of contiki-ng with VCRTOS kernel running on VC7300 (Sirius)
 
-Deploy the source code and generate build system files:
+Deploy the source code and generate build directory:
 ```
 python platform/vc-platform.py --verbose deploy --target=vcrtos_contiki_vc7300 generate
 ```
 
-Build the project:
+Build project cmake build system:
 ```
 cd __vcrtos_contiki_vc7300
 
 mkdir build && cd build
 
 cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./../platform/SDK/vcrtos_contiki_vc7300/ARMGCC.cmake
+```
 
+Compile project:
+```
 make
 ```
 
@@ -146,19 +158,22 @@ Initial Mbed-Client-PAL API will be implemented on this project.
 
 VCRTOS kernel running on Linux
 
-Deploy the source code and generate build system files:
+Deploy the source code and generate build directory:
 ```
 python platform/vc-platform.py --verbose deploy --target=vcrtos_linux generate
 ```
 
-Build the project:
+Build project cmake build system:
 ```
 cd __vcrtos_linux
 
 mkdir build && cd build
 
 cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./../platform/SDK/vcrtos_linux/GCC.cmake
+```
 
+Compile project:
+```
 make
 ```
 
@@ -177,19 +192,22 @@ to reset your terminal.
 
 VCRTOS kernel running on VC7300 (Sirius)
 
-Deploy the source code and generate build system files:
+Deploy the source code and generate build directory:
 ```
 python platform/vc-platform.py --verbose deploy --target=vcrtos_vc7300 generate
 ```
 
-Build the project:
+Build project cmake build system:
 ```
 cd __vcrtos_vc7300
 
 mkdir build && cd build
 
 cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./../platform/SDK/vcrtos_vc7300/ARMGCC.cmake
+```
 
+Compile project:
+```
 make
 ```
 
