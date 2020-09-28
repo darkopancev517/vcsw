@@ -5,7 +5,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     "sdk": {
       "name": "vcrtos_linux",
@@ -22,11 +22,11 @@
         "to": "SDK/vcrtos_linux/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.2.0",
+        "version": "1.2.1",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/vcrtos.git",
-          "tag": "vcrtos-1.2.0"
+          "tag": "vcrtos-1.2.1"
         },
         "to": "SDK/vcrtos_linux/vcrtos"
       }
@@ -38,7 +38,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     "sdk": {
       "name": "vcrtos_vc7300",
@@ -55,11 +55,11 @@
         "to": "SDK/vcrtos_vc7300/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.2.0",
+        "version": "1.2.1",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/vcrtos.git",
-          "tag": "vcrtos-1.2.0"
+          "tag": "vcrtos-1.2.1"
         },
         "to": "SDK/vcrtos_vc7300/vcrtos"
       }
@@ -131,7 +131,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     "sdk": {
       "name": "vcrtos_contiki_vc7300",
@@ -148,11 +148,11 @@
         "to": "SDK/vcrtos_contiki_vc7300/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.2.0",
+        "version": "1.2.1",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/vcrtos.git",
-          "tag": "vcrtos-1.2.0"
+          "tag": "vcrtos-1.2.1"
         },
         "to": "SDK/vcrtos_contiki_vc7300/vcrtos"
       },
@@ -182,7 +182,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     "sdk": {
       "name": "vcrtos_contiki_linux",
@@ -199,11 +199,11 @@
         "to": "SDK/vcrtos_contiki_linux/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.2.0",
+        "version": "1.2.1",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/vcrtos.git",
-          "tag": "vcrtos-1.2.0"
+          "tag": "vcrtos-1.2.1"
         },
         "to": "SDK/vcrtos_contiki_linux/vcrtos"
       },
@@ -224,7 +224,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     "sdk": {
       "name": "vcrtos_wisun_vc7300",
@@ -245,7 +245,7 @@
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/vcrtos.git",
-          "tag": "vcrtos-1.2.0"
+          "tag": "vcrtos-1.2.1"
         },
         "to": "SDK/vcrtos_wisun_vc7300/vcrtos"
       },
