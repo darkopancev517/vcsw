@@ -371,7 +371,7 @@ def apply_patch(patch_file, reverse=False, **stream_kwargs):
     return is_integrated
 
 
-def generate_plat_cmake(target):
+def generate_plat_cmake(target, config_file=None):
     """
     Generate target-dependent cmake files
 
@@ -413,8 +413,23 @@ def generate_plat_cmake(target):
         with open(parent_cmake, 'wt') as fh:
             fh.write('ADDSUBDIRS()\n')
         logger.info('Generated %s', parent_cmake)
+    if config_file is not None:
+        mconfig_cmake = []
+        try:
+            f = open(config_file, 'r')
+            lines = f.readlines()
+            for data in lines:
+                if '#' not in data and data != '\n':
+                    tmp = data.rstrip()
+                    tmp = tmp.replace('=y', ' TRUE')
+                    mconfig_cmake.append('set(' + tmp.replace('=', ' ') + ')')
+        finally:
+            f.close()
+        with open(autogen_file, 'a') as fh:
+            fh.write('\n')
+            for cfg in mconfig_cmake:
+                fh.write(cfg + '\n')
     return out_dir
-
 
 def check_cmd_and_raise(cmd, **kwargs):
     """
@@ -803,8 +818,13 @@ def deploy(config, target_name, skip_update, instructions):
     help='The target to generate platform-dependent files for',
     type=DynamicChoice(get_available_targets)
 )
+@click.option(
+    '--mconfig',
+    'mconfig_file',
+    help='The config file generated from menuconfig',
+)
 @pass_config
-def generate(config, target_name):
+def generate(config, target_name, mconfig_file):
     """Generate files to be used by build-system"""
     if target_name:
         config.target_name = target_name
@@ -819,7 +839,7 @@ def generate(config, target_name):
                 (config.target_name, PROG_NAME, config.target_name)
             )
             raise click.Abort
-        out_dir = generate_plat_cmake(target)
+        out_dir = generate_plat_cmake(target, mconfig_file)
         shutil.copy(
             os.path.join(PLATFORM_ROOT, 'vcsoftwareCmake.txt'),
             os.path.join(out_dir, 'CMakeLists.txt')
