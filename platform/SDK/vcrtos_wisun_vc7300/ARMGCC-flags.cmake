@@ -20,7 +20,7 @@ SET_COMPILER_DBG_RLZ_FLAG (CMAKE_CXX_FLAGS "")
 SET(CMAKE_FLAGS_COMMON_DEBUG "-g -Og")
 SET(CMAKE_FLAGS_COMMON_RELEASE "-Og")
 
-SET(CMAKE_COMPILE_FLAGS_BASIS "-mcpu=cortex-m3 -mthumb -mfloat-abi=soft -ffunction-sections -fdata-sections -Wunused -Wuninitialized -Wall -Wextra -Wshadow -Wlogical-op -Waggregate-return -MMD -MP")
+SET(CMAKE_COMPILE_FLAGS_BASIS "-mcpu=cortex-m3 -mthumb -mfloat-abi=soft -mno-unaligned-access -ffunction-sections -fdata-sections -Wunused -Wuninitialized -Wall -Wextra -Wshadow -Wlogical-op -Waggregate-return -MMD -MP")
 
 ### Set ASM flags ###
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_ASM_FLAGS "${CMAKE_COMPILE_FLAGS_BASIS}")

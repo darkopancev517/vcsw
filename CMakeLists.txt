@@ -16,18 +16,15 @@ set(VCSOFTWARE_COMMON_SRCS
 )
 
 if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
-    SET(VCRTOS_WISUN_SRCS
-        ${VCSOFTWARE_COMMON_SRCS}
-        ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos_wisun_vc7300.cpp
-    )
+    SET(VCRTOS_WISUN_BOOTLOADER_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/bootloader_dummy.c)
 
-    add_definitions(-DVCDRIVERS_PROJECT_CONFIG_FILE="vcdrivers-project-config.h")
-    add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
-    add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
+    #add_definitions(-DVCDRIVERS_PROJECT_CONFIG_FILE="vcdrivers-project-config.h")
+    #add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
+    #add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
 
-    CREATE_TEST_LIBRARY(vcrtos_wisun_vc7300 "${VCRTOS_WISUN_SRCS}" "")
-    add_dependencies(vcrtos_wisun_vc7300 PLATFORM_LIBS)
-    target_link_libraries(vcrtos_wisun_vc7300 PLATFORM_LIBS)
+    CREATE_TEST_LIBRARY(vcrtos_wisun_bootloader "${VCRTOS_WISUN_BOOTLOADER_SRCS}" "")
+    add_dependencies(vcrtos_wisun_bootloader PLATFORM_BOOTLOADER_LIBS)
+    target_link_libraries(vcrtos_wisun_bootloader PLATFORM_BOOTLOADER_LIBS)
 endif()
 
 if(VCSOFTWARE_SDK MATCHES freertos_vc7300)
