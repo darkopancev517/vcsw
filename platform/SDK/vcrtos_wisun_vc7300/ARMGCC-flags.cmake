@@ -36,6 +36,11 @@ SET_COMPILER_DBG_RLZ_FLAG (CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_COMPILE_FLAGS_BAS
 SET_COMPILER_DBG_RLZ_COMMON_FLAG (CMAKE_C_FLAGS CMAKE_FLAGS_COMMON)
 SET_COMPILER_DBG_RLZ_COMMON_FLAG (CMAKE_CXX_FLAGS CMAKE_FLAGS_COMMON)
 
-### Set linker flags ###
-SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-g -Os -Xlinker --gc-sections --specs=nano.specs")
+### Set common linker flags ###
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-g -Os -Xlinker --gc-sections")
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-mcpu=cortex-m3 -mthumb -mno-unaligned-access --specs=nano.specs -static")
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,printf -fno-builtin-printf")
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,sprintf -fno-builtin-sprintf")
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,snprintf -fno-builtin-snprintf")
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,vsnprintf -fno-builtin-vsnprintf")
 

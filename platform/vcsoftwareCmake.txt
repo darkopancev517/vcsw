@@ -85,6 +85,14 @@ add_subdirectory(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/${CMAKE_SOURCE_DIR_NAME
 foreach(TEST_LIB ${TEST_LIBS})
     message("building ${TEST_LIB} with sources libs ${SRC_LIBS}")
 
+    if(${TEST_LIB} MATCHES vcrtos_wisun_bootloader)
+        SET_COMPILER_DBG_RLZ_FLAG(CMAKE_EXE_LINKER_FLAGS "-T${PROJECT_BINARY_DIR}/vcrtos_wisun_bootloader.ld")
+    endif()
+
+    if(${TEST_LIB} MATCHES vcrtos_wisun_main)
+        SET_COMPILER_DBG_RLZ_FLAG(CMAKE_EXE_LINKER_FLAGS "-T${PROJECT_BINARY_DIR}/vcrtos_wisun_main.ld")
+    endif()
+
     if(NOT Additional_SRC)
         set(Additional_SRC dummy.c)
     endif()

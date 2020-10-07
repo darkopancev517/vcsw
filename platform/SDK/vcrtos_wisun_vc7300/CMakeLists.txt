@@ -182,19 +182,19 @@ set(WISUN_BOOTLOADER_SRCS
 
 #add_library(PLATFORM_LIBS STATIC ${PLATFORM_LIBS_SRCS})
 
-set(PLATFORM_LIBS_SRCS
+set(PLATFORM_BOOTLOADER_LIBS_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/dummy.c
 )
 
-add_library(PLATFORM_LIBS STATIC ${PLATFORM_LIBS_SRCS})
+add_library(PLATFORM_BOOTLOADER_LIBS STATIC ${PLATFORM_BOOTLOADER_LIBS_SRCS})
 
 add_library(wisun_bootloader STATIC ${WISUN_BOOTLOADER_SRCS})
 set_target_properties(wisun_bootloader PROPERTIES COMPILE_FLAGS ${WISUN_BOOTLOADER_CFLAGS})
 
-set(PLATFORM_LIBS_list
+set(PLATFORM_BOOTLOADER_LIBS_list
     wisun_bootloader
 )
 
-add_dependencies(PLATFORM_LIBS ${PLATFORM_LIBS_list})
+add_dependencies(PLATFORM_BOOTLOADER_LIBS ${PLATFORM_BOOTLOADER_LIBS_list})
 
-target_link_libraries(PLATFORM_LIBS -Wl,--whole-archive ${PLATFORM_LIBS_list} -Wl,--no-whole-archive)
+target_link_libraries(PLATFORM_BOOTLOADER_LIBS -Wl,--whole-archive ${PLATFORM_BOOTLOADER_LIBS_list} -Wl,--no-whole-archive)
