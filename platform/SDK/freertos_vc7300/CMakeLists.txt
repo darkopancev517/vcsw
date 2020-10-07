@@ -1,8 +1,6 @@
 cmake_minimum_required (VERSION 3.5)
 SET(CMAKE_SYSTEM_NAME Generic)
 
-project(freertos_vc7300)
-
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR})
 
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/include)

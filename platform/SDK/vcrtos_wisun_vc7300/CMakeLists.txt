@@ -1,8 +1,6 @@
 cmake_minimum_required (VERSION 3.5)
 SET(CMAKE_SYSTEM_NAME Generic)
 
-project(vcrtos_wisun_vc7300)
-
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR})
 
 #ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/include)
@@ -50,12 +48,16 @@ set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -DBOARD_USE_VC7300BMTR")
 endif()
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -DRADIO_USE_CENTAURIB3")
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -DSYSTEM_USE_CONTIKI")
+set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -USOC_DEBUG")
+set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -DHAL_UART_SEND_NO_TIMEOUT")
 
 
 set(WISUN_BOOTLOADER_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/system.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/log.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/tick.c
+
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/xmodem/xmodem.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/easylzma/src/lzma_header.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/easylzma/src/pavlov/Alloc.c
@@ -180,19 +182,19 @@ set(WISUN_BOOTLOADER_SRCS
 
 #add_library(PLATFORM_LIBS STATIC ${PLATFORM_LIBS_SRCS})
 
-set(PLATFORM_BOOTLOADER_LIBS_SRCS
+set(PLATFORM_LIBS_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/dummy.c
 )
 
-add_library(PLATFORM_BOOTLOADER_LIBS STATIC ${PLATFORM_BOOTLOADER_LIBS_SRCS})
+add_library(PLATFORM_LIBS STATIC ${PLATFORM_LIBS_SRCS})
 
 add_library(wisun_bootloader STATIC ${WISUN_BOOTLOADER_SRCS})
 set_target_properties(wisun_bootloader PROPERTIES COMPILE_FLAGS ${WISUN_BOOTLOADER_CFLAGS})
 
-set(PLATFORM_BOOTLOADER_LIBS_list
+set(PLATFORM_LIBS_list
     wisun_bootloader
 )
 
-add_dependencies(PLATFORM_BOOTLOADER_LIBS ${PLATFORM_BOOTLOADER_LIBS_list})
+add_dependencies(PLATFORM_LIBS ${PLATFORM_LIBS_list})
 
-target_link_libraries(PLATFORM_BOOTLOADER_LIBS -Wl,--whole-archive ${PLATFORM_BOOTLOADER_LIBS} -Wl,--no-whole-archive)
+target_link_libraries(PLATFORM_LIBS -Wl,--whole-archive ${PLATFORM_LIBS_list} -Wl,--no-whole-archive)
