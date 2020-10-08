@@ -14,7 +14,7 @@ set(VCSOFTWARE_COMMON_SRCS
 )
 
 if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
-    SET(VCRTOS_WISUN_BOOTLOADER_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/bootloader_dummy.c)
+    SET(VCRTOS_WISUN_BOOTLOADER_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/dummy_bootloader.c)
 
     #add_definitions(-DVCDRIVERS_PROJECT_CONFIG_FILE="vcdrivers-project-config.h")
     #add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
@@ -35,6 +35,25 @@ if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
 
     add_dependencies(vcrtos_wisun_bootloader PLATFORM_BOOTLOADER_LIBS vcrtos_wisun_bootloader_linker)
     target_link_libraries(vcrtos_wisun_bootloader PLATFORM_BOOTLOADER_LIBS)
+
+    SET(VCRTOS_WISUN_MAIN_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/dummy_main.c)
+
+    CREATE_TEST_LIBRARY(vcrtos_wisun_main "${VCRTOS_WISUN_MAIN_SRCS}" "")
+
+    # wisun main linker script preprocessing
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/vcrtos_wisun_main.ld
+        COMMAND ${CMAKE_C_COMPILER}
+        -E -P ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/mcu/vc7300a/ARM/linker/vc7300a_main.ld.S
+        -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/include/autoconf.h
+        -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/include/param.h
+        -I${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun
+        -o ${PROJECT_BINARY_DIR}/vcrtos_wisun_main.ld
+        VERBATIM
+    )
+    add_custom_target(vcrtos_wisun_main_linker ALL DEPENDS ${PROJECT_BINARY_DIR}/vcrtos_wisun_main.ld)
+
+    add_dependencies(vcrtos_wisun_main PLATFORM_LIBS vcrtos_wisun_main_linker)
+    target_link_libraries(vcrtos_wisun_main PLATFORM_LIBS)
 endif()
 
 if(VCSOFTWARE_SDK MATCHES freertos_vc7300)
