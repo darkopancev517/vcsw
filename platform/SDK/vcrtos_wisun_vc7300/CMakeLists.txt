@@ -21,7 +21,7 @@ set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wi
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/include")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wall -Werror -Wno-missing-field-initializers -Wno-pragmas -Wno-pointer-sign -Wno-switch")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-type-limits -Wno-unused-parameter -Wno-sign-compare -Wno-logical-op")
-set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-shadow -Wno-format -Wno-old-style-declaration")
+set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-shadow -Wno-format -Wno-old-style-declaration -Wno-empty-body")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -std=gnu99 -fno-delete-null-pointer-checks -fno-peephole2")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -fno-strict-aliasing -fshort-enums")
 
@@ -471,6 +471,7 @@ set(WISUN_MAIN_SYSTEM_CORE_NET_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/mac/frame802154.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/mac/frame802154e-ie.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/mac/framer-802154.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/mac/mac.c
 )
 
 if (NOT CONFIG_CONTIKI_WITH_WISUN_MAC)
@@ -558,49 +559,298 @@ list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SRCS
 )
 endif()
 
-#set(WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_SRCS)
+set(WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/sec_other.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/eapol.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/eapol_key.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/eapol_eap.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/eapol_relay.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun_sec.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun_crypt.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun_tls.c
+)
 
-#set(WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_NAS_SRCS)
+set(WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_NAS_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/nas.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/md5.c
+)
 
-#set(WISUN_MAIN_SYSTEM_DRIVER_SRCS)
+set(WISUN_MAIN_SYSTEM_DRIVER_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/clock.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/ethernet.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/log_output.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/node-id.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/rtimer-arch.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/sq_process.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/topcmd_process.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/trav_process.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/uart-meter-arch.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/uart-txdma.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/vc_sniffer.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/vcshell-iface.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/watchdog.c
 
-#set(WISUN_MAIN_SYSTEM_MAIN_SRCS)
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/${WISUN_RADIO}/adap_cca.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/driver/${WISUN_RADIO}/contiki-radio.c
+)
 
-#set(WISUN_MAIN_SYSTEM_MISC_SRCS)
+set(WISUN_MAIN_SYSTEM_MAIN_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/main/vc_main.c
+)
 
-#set(WISUN_MAIN_SYSTEM_SECURITY_WOFLSSL_SRCS)
+set(WISUN_MAIN_SYSTEM_MISC_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/misc/sys_hook.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_CONFIG_TOOL_SRCS)
+set(WISUN_MAIN_SYSTEM_SECURITY_WOFLSSL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/bio.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/crl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/internal.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/keys.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/ocsp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/sniffer.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/ssl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/tls.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/tls13.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/src/wolfio.c
 
-#set(WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS)
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/aes.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/arc4.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/asm.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/asn.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/async.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/blake2b.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/camellia.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/chacha.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/chacha20_poly1305.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/cmac.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/coding.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/compress.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/cpuid.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/curve25519.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/des3.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/dh.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/dsa.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/ecc.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/ecc_fp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/ed25519.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/error.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/evp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/fe_low_mem.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/fe_operations.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/ge_low_mem.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/ge_operations.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/hash.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/hc128.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/hmac.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/idea.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/integer.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/logging.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/md2.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/md4.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/md5.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/memory.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/misc.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/pkcs12.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/pkcs7.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/poly1305.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/pwdbased.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/rabbit.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/random.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/ripemd.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/rsa.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/sha.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/sha256.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/sha3.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/sha512.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/signature.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/sp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/srp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/tfm.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/wc_encrypt.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/wc_port.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/wolfevent.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/security/wolfssl-3.13.0/wolfcrypt/src/wolfmath.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VC_FORWARDER_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_CONFIG_TOOL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_debug.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_csma.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_rpl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_wisun.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_dhcp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_sys.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_sec.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_filter.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_mpl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/shell_config.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VC_QGDWUART_SRCS)
+if (CONFIG_WISUN_DUAL_MODE)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_CONFIG_TOOL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/config_tool/config_tool_dualmode.c
+)
+endif()
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/netstack_shell_main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/core/shell.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/core/serial-shell.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-ps.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-ping6.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-coap-gen.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-led.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-rpl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-nbr.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-msend.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-udp-gen.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SHELL_SRCS)
+if (CONFIG_WISUN_ROOT)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-pntest_tool.c
+)
+endif()
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VC_TIMERUART_SRCS)
+if (CONFIG_UIP_CONF_TCP)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-tcp-gen.c
+)
+endif()
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_COAP_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_VC_FORWARDER_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_forwarder/vc_forwarder.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_DLMS_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/vc_sysResAL.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/res/sysResRpl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/res/sysResLinkStats.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/res/sysResPlatInfo.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/res/sysResIpv6.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/res/sysResNet.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/vc_sysResAL_evHandler/vc_sysResAL_evHandler.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/vc_sysResAL_evHandler/res/evHandler.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/vc_sysResAL_mem/vc_sysResAL_mem.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_QGDW_1376_2_SRCS)
+if (CONFIG_WISUN_ROOT)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_sysResAL/res/sysResDhcp6.c
+)
+endif()
 
-#set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_SLIP_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_VC_TIMERUART_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vc_timerUart/vc_timerUart.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_TELNETD_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_COAP_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap-observe.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap-transactions.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap-separate.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap-observe-client.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap-engine.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/rest-engine.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap-res-well-known-core.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_coap/er-coap-block1.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_DLMS_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_dlms/vertexcom_dlms.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_COAP_RESOURCE_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_QGDW_1376_2_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_qgdw_1376_2/vertexcom_qgdw_contiki.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_qgdw_1376_2/afn_qgdw1376_2.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_qgdw_1376_2/discovery.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_qgdw_1376_2/fn_gdw1376_2.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_qgdw_1376_2/parse.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_qgdw_1376_2/qgdw_adaption_layer.c
+)
 
-#set(WISUN_MAIN_SYSTEM_UTILS_ATCMD_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_SLIP_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/vertexcom_slip/vertexcom_slip.c
+)
 
-#set(WISUN_MAIN_APPS_SRCS)
+set(WISUN_MAIN_SYSTEM_UTILS_TELNETD_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/telnetd/telnetd.c
+)
+
+set(WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/vc_unittest.c
+)
+
+if (CONFIG_UNITTEST_DRIVER)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unittests/unittest_driver.c
+)
+endif()
+
+if (CONFIG_UNITTEST_API)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unittests/unittest_api.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unit_test/unittest_timeruart.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unit_test/unittest_udp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unit_test/unittest_tcp.c
+)
+endif()
+
+if (CONFIG_UNITTEST_HAL)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unittests/unittest_hal.c
+)
+endif()
+
+if (CONFIG_UNITTEST_WISUN)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unittests/unittest_wisun.c
+)
+endif()
+
+if (CONFIG_UNITTEST_SYS_NET)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/unit_test_framework/unittests/unittest_sysnet.c
+)
+endif()
+
+set(WISUN_MAIN_SYSTEM_UTILS_COAP_RESOURCE_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdLinkTableNum.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdLinkTable.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdSysInfo.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdPeripheralInfo.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdEvHandler.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdfwUpgrade.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdShellHandler.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/vc_app_coapHandler.c
+)
+
+if (CONFIG_WISUN_ROOT)
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_COAP_RESOURCE_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdJoinedTableNum.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdJoinedTable.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdRoutingTableNum.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdRoutingTable.c
+)
+else()
+list(APPEND WISUN_MAIN_SYSTEM_UTILS_COAP_RESOURCE_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/coap_resource/res/vcCmdParentInfo.c
+)
+endif()
+
+set(WISUN_MAIN_SYSTEM_UTILS_ATCMD_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/at_command/atcmd.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/at_command/atcmd_uart.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/at_command/atcmd_res.c
+)
+
+if (CONFIG_BUILD_APP_vcapps)
+set(WISUN_MAIN_APPS_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/apps/vcapps/vcapps.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/apps/vcapps/ws_customer_certs.c
+)
+endif()
 
 #set(VCDRIVERS_COMMON_SRCS
 #    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/stdiobase.c
@@ -704,71 +954,76 @@ set_target_properties(wisun_main_system_core_net PROPERTIES COMPILE_FLAGS ${WISU
 add_library(wisun_main_system_core_net_wisun STATIC ${WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SRCS})
 set_target_properties(wisun_main_system_core_net_wisun PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_core_net_wisun_sec STATIC ${WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_SRCS})
-#set_target_properties(wisun_main_system_core_net_wisun_sec PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+if (CONFIG_CONTIKI_WITH_WISUN_SECURITY)
+add_library(wisun_main_system_core_net_wisun_sec STATIC ${WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_SRCS})
+set_target_properties(wisun_main_system_core_net_wisun_sec PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+if (CONFIG_CONTIKI_WITH_WISUN_NAS)
+add_library(wisun_main_system_core_net_wisun_sec_nas STATIC ${WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_NAS_SRCS})
+set_target_properties(wisun_main_system_core_net_wisun_sec_nas PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
+endif()
 
-#add_library(wisun_main_system_core_net_wisun_sec_nas STATIC ${WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SEC_NAS_SRCS})
-#set_target_properties(wisun_main_system_core_net_wisun_sec_nas PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_driver STATIC ${WISUN_MAIN_SYSTEM_DRIVER_SRCS})
+set_target_properties(wisun_main_system_driver PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_driver STATIC ${WISUN_MAIN_SYSTEM_DRIVER_SRCS})
-#set_target_properties(wisun_main_system_driver PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_main STATIC ${WISUN_MAIN_SYSTEM_MAIN_SRCS})
+set_target_properties(wisun_main_system_main PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_main STATIC ${WISUN_MAIN_SYSTEM_MAIN_SRCS})
-#set_target_properties(wisun_main_system_main PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_misc STATIC ${WISUN_MAIN_SYSTEM_MISC_SRCS})
+set_target_properties(wisun_main_system_misc PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_misc STATIC ${WISUN_MAIN_SYSTEM_MISC_SRCS})
-#set_target_properties(wisun_main_system_misc PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+if (CONFIG_CONTIKI_WITH_WISUN_SECURITY)
+add_library(wisun_main_system_security_wolfssl STATIC ${WISUN_MAIN_SYSTEM_SECURITY_WOFLSSL_SRCS})
+set_target_properties(wisun_main_system_security_wolfssl PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
-#add_library(wisun_main_system_security_wolfssl STATIC ${WISUN_MAIN_SYSTEM_SECURITY_WOFLSSL_SRCS})
-#set_target_properties(wisun_main_system_security_wolfssl PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_config_tool STATIC ${WISUN_MAIN_SYSTEM_UTILS_CONFIG_TOOL_SRCS})
+set_target_properties(wisun_main_system_utils_config_tool PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_config_tool STATIC ${WISUN_MAIN_SYSTEM_UTILS_CONFIG_TOOL_SRCS})
-#set_target_properties(wisun_main_system_utils_config_tool PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_shell STATIC ${WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS})
+set_target_properties(wisun_main_system_utils_shell PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_shell STATIC ${WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS})
-#set_target_properties(wisun_main_system_utils_shell PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_vc_forwarder STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_FORWARDER_SRCS})
+set_target_properties(wisun_main_system_utils_vc_forwarder PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_vc_forwarder STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_FORWARDER_SRCS})
-#set_target_properties(wisun_main_system_utils_vc_forwarder PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_vc_sysresal STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SRCS})
+set_target_properties(wisun_main_system_utils_vc_sysresal PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_vc_qgdwuart STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_QGDWUART_SRCS})
-#set_target_properties(wisun_main_system_utils_vc_qgdwuart PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_vc_timeruart STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_TIMERUART_SRCS})
+set_target_properties(wisun_main_system_utils_vc_timeruart PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_vc_sysresal STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SRCS})
-#set_target_properties(wisun_main_system_utils_vc_sysresal PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_vertexcom_coap STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_COAP_SRCS})
+set_target_properties(wisun_main_system_utils_vertexcom_coap PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_vc_sysresal_shell STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SHELL_SRCS})
-#set_target_properties(wisun_main_system_utils_vc_sysresal_shell PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_vertexcom_dlms STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_DLMS_SRCS})
+set_target_properties(wisun_main_system_utils_vertexcom_dlms PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_vc_timeruart STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_TIMERUART_SRCS})
-#set_target_properties(wisun_main_system_utils_vc_timeruart PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_vertexcom_qgdw_1376_2 STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_QGDW_1376_2_SRCS})
+set_target_properties(wisun_main_system_utils_vertexcom_qgdw_1376_2 PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_vertexcom_coap STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_COAP_SRCS})
-#set_target_properties(wisun_main_system_utils_vertexcom_coap PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_vertexcom_slip STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_SLIP_SRCS})
+set_target_properties(wisun_main_system_utils_vertexcom_slip PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_vertexcom_dlms STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_DLMS_SRCS})
-#set_target_properties(wisun_main_system_utils_vertexcom_dlms PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+if (CONFIG_UIP_CONF_TCP)
+add_library(wisun_main_system_utils_telnetd STATIC ${WISUN_MAIN_SYSTEM_UTILS_TELNETD_SRCS})
+set_target_properties(wisun_main_system_utils_telnetd PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
-#add_library(wisun_main_system_utils_vertexcom_qgdw_1376_2 STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_QGDW_1376_2_SRCS})
-#set_target_properties(wisun_main_system_utils_vertexcom_qgdw_1376_2 PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+if (CONFIG_UNITTEST_FRAMEWORK)
+add_library(wisun_main_system_utils_unittest_framework STATIC ${WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS})
+set_target_properties(wisun_main_system_utils_unittest_framework PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
-#add_library(wisun_main_system_utils_vertexcom_slip STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_SLIP_SRCS})
-#set_target_properties(wisun_main_system_utils_vertexcom_slip PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+if (CONFIG_CONTIKI_WITH_COAP)
+add_library(wisun_main_system_utils_coap_resource STATIC ${WISUN_MAIN_SYSTEM_UTILS_COAP_RESOURCE_SRCS})
+set_target_properties(wisun_main_system_utils_coap_resource PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
-#add_library(wisun_main_system_utils_telnetd STATIC ${WISUN_MAIN_SYSTEM_UTILS_TELNETD_SRCS})
-#set_target_properties(wisun_main_system_utils_telnetd PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_system_utils_atcmd STATIC ${WISUN_MAIN_SYSTEM_UTILS_ATCMD_SRCS})
+set_target_properties(wisun_main_system_utils_atcmd PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
-#add_library(wisun_main_system_utils_unittest_framework STATIC ${WISUN_MAIN_SYSTEM_UTILS_UNITTEST_FRAMEWORK_SRCS})
-#set_target_properties(wisun_main_system_utils_unittest_framework PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
-
-#add_library(wisun_main_system_utils_coap_resource STATIC ${WISUN_MAIN_SYSTEM_UTILS_COAP_RESOURCE_SRCS})
-#set_target_properties(wisun_main_system_utils_coap_resource PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
-
-#add_library(wisun_main_system_utils_atcmd STATIC ${WISUN_MAIN_SYSTEM_UTILS_ATCMD_SRCS})
-#set_target_properties(wisun_main_system_utils_atcmd PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
-
-#add_library(wisun_main_apps STATIC ${WISUN_MAIN_APPS_SRCS})
-#set_target_properties(wisun_main_apps PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+add_library(wisun_main_apps STATIC ${WISUN_MAIN_APPS_SRCS})
+set_target_properties(wisun_main_apps PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
 set(PLATFORM_LIBS_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/dummy.c
@@ -803,7 +1058,51 @@ set(PLATFORM_LIBS_list
     wisun_main_system_core_lib
     wisun_main_system_core_net
     wisun_main_system_core_net_wisun
+    wisun_main_system_driver
+    wisun_main_system_main
+    wisun_main_system_misc
+    wisun_main_system_utils_config_tool
+    wisun_main_system_utils_shell
+    wisun_main_system_utils_vc_forwarder
+    wisun_main_system_utils_vc_sysresal
+    wisun_main_system_utils_vc_timeruart
+    wisun_main_system_utils_vertexcom_coap
+    wisun_main_system_utils_vertexcom_dlms
+    wisun_main_system_utils_vertexcom_qgdw_1376_2
+    wisun_main_system_utils_vertexcom_slip
+    wisun_main_system_utils_atcmd
+    wisun_main_apps
 )
+
+if (CONFIG_CONTIKI_WITH_COAP)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_coap_resource
+)
+endif()
+
+if (CONFIG_UNITTEST_FRAMEWORK)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_unittest_framework
+)
+endif()
+
+if (CONFIG_UIP_CONF_TCP)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_telnetd
+)
+endif()
+
+if (CONFIG_CONTIKI_WITH_WISUN_SECURITY)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_core_net_wisun_sec
+    wisun_main_system_security_wolfssl
+)
+if (CONFIG_CONTIKI_WITH_WISUN_NAS)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_core_net_wisun_sec_nas
+)
+endif()
+endif()
 
 add_dependencies(PLATFORM_LIBS ${PLATFORM_LIBS_list})
 
