@@ -17,10 +17,10 @@ SET_COMPILER_DBG_RLZ_FLAG (CMAKE_C_FLAGS "")
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_CXX_FLAGS "")
 
 #SET(CMAKE_FLAGS_COMMON_DEBUG "-DDEBUG -g -Og")
-SET(CMAKE_FLAGS_COMMON_DEBUG "-g -Og")
-SET(CMAKE_FLAGS_COMMON_RELEASE "-Og")
+SET(CMAKE_FLAGS_COMMON_DEBUG "-g -Os")
+SET(CMAKE_FLAGS_COMMON_RELEASE "-g -Os")
 
-SET(CMAKE_COMPILE_FLAGS_BASIS "-mcpu=cortex-m3 -mthumb -mfloat-abi=soft -mno-unaligned-access -ffunction-sections -fdata-sections -Wunused -Wuninitialized -Wall -Wextra -Wshadow -Wlogical-op -Waggregate-return -MMD -MP")
+SET(CMAKE_COMPILE_FLAGS_BASIS "-mcpu=cortex-m3 -mthumb -mfloat-abi=soft -mno-unaligned-access -ffunction-sections -fdata-sections -Wunused -Wuninitialized -Wall -Wextra -Wshadow -Wlogical-op -Waggregate-return -MMD")
 
 ### Set ASM flags ###
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_ASM_FLAGS "${CMAKE_COMPILE_FLAGS_BASIS}")
@@ -39,6 +39,8 @@ SET_COMPILER_DBG_RLZ_COMMON_FLAG (CMAKE_CXX_FLAGS CMAKE_FLAGS_COMMON)
 ### Set common linker flags ###
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-g -Os -Xlinker --gc-sections")
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-mcpu=cortex-m3 -mthumb -mno-unaligned-access --specs=nano.specs -static")
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,_malloc_r -Wl,--wrap,_free_r -Wl,--wrap,_realloc_r -Wl,--wrap,_calloc_r")
+SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,memset -Wl,--wrap,memcpy")
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,printf -fno-builtin-printf")
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,sprintf -fno-builtin-sprintf")
 SET_COMPILER_DBG_RLZ_FLAG (CMAKE_EXE_LINKER_FLAGS "-Wl,--wrap,snprintf -fno-builtin-snprintf")

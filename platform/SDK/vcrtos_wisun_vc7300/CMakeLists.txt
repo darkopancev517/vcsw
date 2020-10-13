@@ -23,7 +23,7 @@ set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wall -Werror -Wno-missing-field
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-type-limits -Wno-unused-parameter -Wno-sign-compare -Wno-logical-op")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-shadow -Wno-format -Wno-old-style-declaration -Wno-empty-body")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -std=gnu99 -fno-delete-null-pointer-checks -fno-peephole2")
-set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -fno-strict-aliasing -fshort-enums")
+set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -fno-strict-aliasing -fshort-enums -fno-builtin-printf")
 
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common")
 
@@ -43,6 +43,12 @@ set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wi
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/hal")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/ARM/cmsis")
 
+if (CONFIG_WISUN_ROOT)
+set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -DWISUN_ROOT=1")
+else()
+set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -DWISUN_NODE=1")
+endif()
+
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-unused-variable -Wno-unused-but-set-variable")
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader")
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/xmodem")
@@ -57,7 +63,6 @@ set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -DRADIO_USE_CENTAURIB3")
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -DSYSTEM_USE_CONTIKI")
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -USOC_DEBUG")
 set(WISUN_BOOTLOADER_CFLAGS "${WISUN_BOOTLOADER_CFLAGS} -DHAL_UART_SEND_NO_TIMEOUT")
-
 
 set(WISUN_BOOTLOADER_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/bootloader/system.c
@@ -118,7 +123,7 @@ set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DSYSTEM_USE_CONTIKI")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DSW_VERSION=0xdeadbeef")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DSW_DATE=0xdeadbeef")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DSW_TIME=0xdeadbeef")
-set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DSW_BRANCH=abcd")
+set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DSW_BRANCH=master")
 
 if (CONFIG_RADIO_centauriB3)
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/radio/centauriB3")
@@ -174,6 +179,7 @@ set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -Wno-cpp -Wno-unused-variable -Wno-f
 
 if (CONFIG_CONTIKI_WITH_IPV6)
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DNETSTACK_CONF_WITH_IPV6=1")
+set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DUIP_CONF_IPV6_RPL=1")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/ipv6/multicast")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/ipv6")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/ip")
@@ -248,7 +254,7 @@ set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DPROJECT_CONF_H='\"vc_projectConf.h\"'")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DUSE_CONFIG_TOOL")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DCONTIKI_WITH_VMEM=1")
-set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DCONTIKI_WITH_VC_APP_REAPP=1")
+set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DCONTIKI_WITH_VC_APP_REFAPP=1")
 
 if (CONFIG_CONTIKI_WITH_COAP)
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DCONTIKI_CONF_WITH_VC_APP_COAPHANDLER=1")
@@ -983,26 +989,40 @@ set_target_properties(wisun_main_system_utils_config_tool PROPERTIES COMPILE_FLA
 add_library(wisun_main_system_utils_shell STATIC ${WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS})
 set_target_properties(wisun_main_system_utils_shell PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 
+if (CONFIG_DRV_APPUART_VERTEXCOM_SLIP_VC_FORWARDER)
 add_library(wisun_main_system_utils_vc_forwarder STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_FORWARDER_SRCS})
 set_target_properties(wisun_main_system_utils_vc_forwarder PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
+if (CONFIG_CONTIKI_WITH_SYSRESAL)
 add_library(wisun_main_system_utils_vc_sysresal STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_SYSRESAL_SRCS})
 set_target_properties(wisun_main_system_utils_vc_sysresal PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
+if (CONFIG_DRV_APPUART_VC_TIMERUART)
 add_library(wisun_main_system_utils_vc_timeruart STATIC ${WISUN_MAIN_SYSTEM_UTILS_VC_TIMERUART_SRCS})
 set_target_properties(wisun_main_system_utils_vc_timeruart PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
+if (CONFIG_CONTIKI_WITH_COAP)
 add_library(wisun_main_system_utils_vertexcom_coap STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_COAP_SRCS})
 set_target_properties(wisun_main_system_utils_vertexcom_coap PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
+if (CONFIG_DRV_APPUART_VERTEXCOM_DLMS)
 add_library(wisun_main_system_utils_vertexcom_dlms STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_DLMS_SRCS})
 set_target_properties(wisun_main_system_utils_vertexcom_dlms PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
+if (CONFIG_DRV_APPUART_VC_QGDW_1376)
 add_library(wisun_main_system_utils_vertexcom_qgdw_1376_2 STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_QGDW_1376_2_SRCS})
 set_target_properties(wisun_main_system_utils_vertexcom_qgdw_1376_2 PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
+if (CONFIG_DRV_APPUART_VERTEXCOM_SLIP)
 add_library(wisun_main_system_utils_vertexcom_slip STATIC ${WISUN_MAIN_SYSTEM_UTILS_VERTEXCOM_SLIP_SRCS})
 set_target_properties(wisun_main_system_utils_vertexcom_slip PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
 if (CONFIG_UIP_CONF_TCP)
 add_library(wisun_main_system_utils_telnetd STATIC ${WISUN_MAIN_SYSTEM_UTILS_TELNETD_SRCS})
@@ -1019,8 +1039,10 @@ add_library(wisun_main_system_utils_coap_resource STATIC ${WISUN_MAIN_SYSTEM_UTI
 set_target_properties(wisun_main_system_utils_coap_resource PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
 endif()
 
+if (CONFIG_DRV_APPUART_ATCMD)
 add_library(wisun_main_system_utils_atcmd STATIC ${WISUN_MAIN_SYSTEM_UTILS_ATCMD_SRCS})
 set_target_properties(wisun_main_system_utils_atcmd PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
+endif()
 
 add_library(wisun_main_apps STATIC ${WISUN_MAIN_APPS_SRCS})
 set_target_properties(wisun_main_apps PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
@@ -1063,19 +1085,54 @@ set(PLATFORM_LIBS_list
     wisun_main_system_misc
     wisun_main_system_utils_config_tool
     wisun_main_system_utils_shell
-    wisun_main_system_utils_vc_forwarder
-    wisun_main_system_utils_vc_sysresal
-    wisun_main_system_utils_vc_timeruart
-    wisun_main_system_utils_vertexcom_coap
-    wisun_main_system_utils_vertexcom_dlms
-    wisun_main_system_utils_vertexcom_qgdw_1376_2
-    wisun_main_system_utils_vertexcom_slip
-    wisun_main_system_utils_atcmd
     wisun_main_apps
 )
 
+if (CONFIG_DRV_APPUART_VERTEXCOM_SLIP_VC_FORWARDER)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_vc_forwarder
+)
+endif()
+
+if (CONFIG_DRV_APPUART_VC_QGDW_1376)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_vertexcom_qgdw_1376_2
+)
+endif()
+
+if (CONFIG_DRV_APPUART_VC_TIMERUART)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_vc_timeruart
+)
+endif()
+
+if (CONFIG_DRV_APPUART_VERTEXCOM_DLMS)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_vertexcom_dlms
+)
+endif()
+
+if (CONFIG_DRV_APPUART_VERTEXCOM_SLIP)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_vertexcom_slip
+)
+endif()
+
+if (CONFIG_CONTIKI_WITH_SYSRESAL)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_vc_sysresal
+)
+endif()
+
+if (CONFIG_DRV_APPUART_ATCMD)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_atcmd
+)
+endif()
+
 if (CONFIG_CONTIKI_WITH_COAP)
 list(APPEND PLATFORM_LIBS_list
+    wisun_main_system_utils_vertexcom_coap
     wisun_main_system_utils_coap_resource
 )
 endif()

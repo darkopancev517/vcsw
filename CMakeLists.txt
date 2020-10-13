@@ -32,7 +32,6 @@ if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
         VERBATIM
     )
     add_custom_target(vcrtos_wisun_bootloader_linker ALL DEPENDS ${PROJECT_BINARY_DIR}/vcrtos_wisun_bootloader.ld)
-
     add_dependencies(vcrtos_wisun_bootloader PLATFORM_BOOTLOADER_LIBS vcrtos_wisun_bootloader_linker)
     target_link_libraries(vcrtos_wisun_bootloader PLATFORM_BOOTLOADER_LIBS)
 
@@ -51,9 +50,53 @@ if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
         VERBATIM
     )
     add_custom_target(vcrtos_wisun_main_linker ALL DEPENDS ${PROJECT_BINARY_DIR}/vcrtos_wisun_main.ld)
-
     add_dependencies(vcrtos_wisun_main PLATFORM_LIBS vcrtos_wisun_main_linker)
     target_link_libraries(vcrtos_wisun_main PLATFORM_LIBS)
+
+    # create compressed version of vcrtos_wisun_main.bin
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Linux/x86_64/elzma -k -s 65536 -v -f ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin && mv ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp && touch ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic && printf "vtxc" >> ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp
+        COMMENT "create compressed version of vcrtos_wisun_main.bin"
+        VERBATIM
+    )
+    add_custom_target(vcrtos_wisun_main_compressed ALL DEPENDS
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma
+    )
+
+    # padding vcrtos_wisun_bootloader.bin to 16K
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_16K.bin
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/scripts/padding_bootloader.sh ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader.bin ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_padding.bin && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader.bin ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_padding.bin > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_16K.bin && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_padding.bin
+        COMMENT "padding vcrtos_wisun_bootloader.bin to 16KB"
+        VERBATIM
+    )
+    add_custom_target(vcrtos_wisun_bootloader_16K ALL DEPENDS
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_16K.bin
+    )
+
+    # combine vcrtos_wisun_bootloader_16K.bin with vcrtos_wisun_main.bin
+
+    if (CONFIG_WISUN_ROOT)
+        set(WISUN_DEVICE_ROLE ROOT)
+    else()
+        set(WISUN_DEVICE_ROLE NODE)
+    endif()
+
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_${WISUN_DEVICE_ROLE}.bin
+        COMMAND cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_16K.bin ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_${WISUN_DEVICE_ROLE}.bin
+        COMMENT "combine bootloader and main image as vcrtos_wisun_${WISUN_DEVICE_ROLE}.bin"
+        VERBATIM
+    )
+
+    add_custom_target(vcrtos_wisun_${WISUN_DEVICE_ROLE} ALL DEPENDS
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_16K.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_${WISUN_DEVICE_ROLE}.bin
+    )
+
+    # TODO: build firmware upgrade image
+
 endif()
 
 if(VCSOFTWARE_SDK MATCHES freertos_vc7300)
