@@ -19,9 +19,7 @@ set(WISUN_COMMON_CFLAGS "-include ${CMAKE_CURRENT_SOURCE_DIR}/wisun/include/auto
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -include ${CMAKE_CURRENT_SOURCE_DIR}/wisun/include/param.h")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/wisun/include")
-set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wall -Werror -Wno-missing-field-initializers -Wno-pragmas -Wno-pointer-sign -Wno-switch")
-set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-type-limits -Wno-unused-parameter -Wno-sign-compare -Wno-logical-op")
-set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wno-shadow -Wno-format -Wno-old-style-declaration -Wno-empty-body")
+set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -Wall -Werror -Wno-pragmas -Wno-format -Wno-pointer-sign -Wno-switch")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -std=gnu99 -fno-delete-null-pointer-checks -fno-peephole2")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -fno-strict-aliasing -fshort-enums -fno-builtin-printf")
 
