@@ -109,6 +109,8 @@ set(WISUN_BOOTLOADER_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/ARM/startup/vc7300a_bootloader.s
 )
 
+set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/ARM/startup/vc7300a_bootloader.s PROPERTY LANGUAGE C)
+
 set(WISUN_MAIN_CFLAGS "${WISUN_COMMON_CFLAGS}")
 set(WISUN_MAIN_CFLAGS "${WISUN_MAIN_CFLAGS} -DMCU_USE_VC7300A")
 if (CONFIG_BOARD_vc7300BMTR)
@@ -309,6 +311,8 @@ set(WISUN_MAIN_MCU_SRCS
 
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/ARM/startup/vc7300a_main.s
 )
+
+set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/ARM/startup/vc7300a_main.s PROPERTY LANGUAGE C)
 
 set(WISUN_MAIN_BOARD_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common/backtrace.c
