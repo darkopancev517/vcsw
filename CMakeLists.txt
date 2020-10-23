@@ -16,9 +16,8 @@ set(VCSOFTWARE_COMMON_SRCS
 if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
     SET(VCRTOS_WISUN_BOOTLOADER_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/dummy_bootloader.c)
 
-    #add_definitions(-DVCDRIVERS_PROJECT_CONFIG_FILE="vcdrivers-project-config.h")
-    #add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
-    #add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
+    add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
+    add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
 
     CREATE_TEST_LIBRARY(vcrtos_wisun_bootloader "${VCRTOS_WISUN_BOOTLOADER_SRCS}" "")
 

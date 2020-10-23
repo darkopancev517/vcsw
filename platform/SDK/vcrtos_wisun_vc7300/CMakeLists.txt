@@ -3,17 +3,14 @@ SET(CMAKE_SYSTEM_NAME Generic)
 
 ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR})
 
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/include)
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/include/cmsis)
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source)
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/sirius)
+ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/include)
 
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/include)
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source)
-
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos)
-#ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/porting/wisun)
+if (CONFIG_BUILD_WITH_VCRTOS)
+ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/include)
+ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source)
+ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos)
 #ADD_GLOBALDIR(${CMAKE_CURRENT_SOURCE_DIR}/porting/mbed-client-pal)
+endif()
 
 set(WISUN_COMMON_CFLAGS "-include ${CMAKE_CURRENT_SOURCE_DIR}/wisun/include/autoconf.h")
 set(WISUN_COMMON_CFLAGS "${WISUN_COMMON_CFLAGS} -include ${CMAKE_CURRENT_SOURCE_DIR}/wisun/include/param.h")
@@ -860,80 +857,55 @@ set(WISUN_MAIN_APPS_SRCS
 )
 endif()
 
-#set(VCDRIVERS_COMMON_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/stdiobase.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/syscalls.c
-#)
+set(VCRTOS_CORE_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/instance.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/msg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/mutex.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/thread.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/rmutex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/sema.c
+)
 
-#set(VCDRIVERS_CPU_PERIPH_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/sirius/cpu.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/sirius/vectors.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/sirius/periph/gpio.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/sirius/periph/irq.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/sirius/periph/tim.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcdrivers/source/sirius/periph/uart.c
-#)
+set(VCRTOS_CORE_API_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/instance_api.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/msg_api.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/mutex_api.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/mutex_timeout_api.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/thread_api.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/event_api.cpp
+)
 
-#set(VCRTOS_CORE_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/instance.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/msg.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/mutex.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/thread.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/rmutex.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/sema.c
-#)
+set(VCRTOS_ZTIMER_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/core.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/overhead.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/util.c
+)
 
-#set(VCRTOS_CORE_API_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/instance_api.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/msg_api.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/mutex_api.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/mutex_timeout_api.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/thread_api.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/event_api.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/heap_api.cpp
-#)
+set(WISUN_MAIN_PORTING_VCRTOS_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/kernel_init.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/thread_arch.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/cpu_arch.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/ztimer_periph.c
+)
 
-#set(VCRTOS_UTILS_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/utils/isrpipe.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/utils/ringbuffer.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/utils/heap.cpp
-#)
+set(WISUN_MAIN_PORTING_VCDRIVERS_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcdrivers/assert_failure.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcdrivers/tim.c
+)
 
-#set(VCRTOS_CLI_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/cli/cli.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/cli/cli_uart.cpp
-#)
+if (CONFIG_BUILD_WITH_VCRTOS)
+add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
+add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
 
-#set(VCRTOS_ZTIMER_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/core.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/overhead.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/util.c
-#)
+add_library(vcrtos_core STATIC ${VCRTOS_CORE_SRCS})
+add_library(vcrtos_core_api STATIC ${VCRTOS_CORE_API_SRCS})
+add_library(vcrtos_ztimer STATIC ${VCRTOS_ZTIMER_SRCS})
 
-#set(PORTING_VCRTOS_SRCS
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/cortexm.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/cpu_arch.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/kernel_init.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/stdiobase_arch.cpp
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/thread_arch.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/commands.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/ztimer_periph.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/assert_failure.c
-#    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/simple_malloc.c
-#)
+add_library(wisun_main_porting_vcrtos STATIC ${WISUN_MAIN_PORTING_VCRTOS_SRCS})
+set_target_properties(wisun_main_porting_vcrtos PROPERTIES COMPILE_FLAGS ${WISUN_COMMON_CFLAGS})
 
-#add_definitions(-DVCDRIVERS_PROJECT_CONFIG_FILE="vcdrivers-project-config.h")
-#add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
-#add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
-
-#add_library(vcdrivers_common STATIC ${VCDRIVERS_COMMON_SRCS})
-#add_library(vcdrivers_cpu_periph STATIC ${VCDRIVERS_CPU_PERIPH_SRCS})
-#add_library(vcrtos_core STATIC ${VCRTOS_CORE_SRCS})
-#add_library(vcrtos_core_api STATIC ${VCRTOS_CORE_API_SRCS})
-#add_library(vcrtos_utils STATIC ${VCRTOS_UTILS_SRCS})
-#add_library(vcrtos_cli STATIC ${VCRTOS_CLI_SRCS})
-#add_library(vcrtos_ztimer STATIC ${VCRTOS_ZTIMER_SRCS})
-#add_library(porting_vcrtos STATIC ${PORTING_VCRTOS_SRCS})
+add_library(wisun_main_porting_vcdrivers STATIC ${WISUN_MAIN_PORTING_VCDRIVERS_SRCS})
+endif()
 
 add_library(wisun_main_mcu STATIC ${WISUN_MAIN_MCU_SRCS})
 set_target_properties(wisun_main_mcu PROPERTIES COMPILE_FLAGS ${WISUN_MAIN_CFLAGS})
@@ -1089,6 +1061,16 @@ set(PLATFORM_LIBS_list
     wisun_main_system_utils_shell
     wisun_main_apps
 )
+
+if (CONFIG_BUILD_WITH_VCRTOS)
+list(APPEND PLATFORM_LIBS_list
+    wisun_main_porting_vcdrivers
+    wisun_main_porting_vcrtos
+    vcrtos_core
+    vcrtos_core_api
+    vcrtos_ztimer
+)
+endif()
 
 if (CONFIG_DRV_APPUART_VERTEXCOM_SLIP_VC_FORWARDER)
 list(APPEND PLATFORM_LIBS_list

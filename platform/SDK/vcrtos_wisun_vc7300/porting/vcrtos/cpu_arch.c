@@ -17,7 +17,7 @@
 
 #include <stdio.h>
 
-#include <vcdrivers/cpu.h>
+#include <vcsoc.h>
 
 #include <vcrtos/cpu.h>
 #include <vcrtos/thread.h>

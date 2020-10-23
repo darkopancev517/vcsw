@@ -18,14 +18,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <vcdrivers/stdiobase.h>
-
 #include <vcrtos/config.h>
 #include <vcrtos/assert.h>
 #include <vcrtos/cpu.h>
 #include <vcrtos/instance.h>
 #include <vcrtos/thread.h>
-#include <vcrtos/heap.h>
 
 #if VCRTOS_CONFIG_ZTIMER_ENABLE
 #include <vcrtos/ztimer.h>
@@ -74,13 +71,9 @@ void kernel_init(void)
 {
     (void) cpu_irq_disable();
 
-    (void) heap_init();
-
     instance_t *instance = instance_init_single();
 
     vcassert(instance_is_initialized(instance));
-
-    vcstdio_init(instance);
 
 #if VCRTOS_CONFIG_ZTIMER_ENABLE
     ztimer_periph_timer_init(&_ztimer_periph_timer_usec,
@@ -88,8 +81,6 @@ void kernel_init(void)
                              VCRTOS_CONFIG_ZTIMER_USEC_BASE_FREQ,
                              WIDTH_TO_MAXVAL(VCRTOS_CONFIG_ZTIMER_USEC_WIDTH));
 #endif
-
-    printf("\r\n\r\nvcrtos-%s kernel started\r\n\r\n", VCRTOS_VERSION);
 
     (void) thread_create((void *)instance, _main_stack, sizeof(_main_stack),
                          KERNEL_THREAD_PRIORITY_MAIN,

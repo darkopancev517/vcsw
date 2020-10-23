@@ -17,7 +17,7 @@
 
 #include <stdio.h>
 
-#include <vcdrivers/cpu.h>
+#include <vcsoc.h>
 
 #include <vcrtos/cpu.h>
 #include <vcrtos/instance.h>
@@ -128,6 +128,7 @@ void thread_arch_stack_print(void)
 
 int thread_arch_isr_stack_usage(void)
 {
+#if 0
     uint32_t *ptr = &_sstack;
 
     while (((*ptr) == STACK_CANARY_WORD) && (ptr < &_estack))
@@ -138,6 +139,9 @@ int thread_arch_isr_stack_usage(void)
     ptrdiff_t num_used_words = &_estack - ptr;
 
     return num_used_words * sizeof(*ptr);
+#else
+    return 0;
+#endif
 }
 
 void *thread_arch_isr_stack_pointer(void)
@@ -148,7 +152,11 @@ void *thread_arch_isr_stack_pointer(void)
 
 void *thread_arch_isr_stack_start(void)
 {
+#if 0
     return (void *)&_sstack;
+#else
+    return NULL;
+#endif
 }
 
 __attribute__((naked)) __attribute__((used)) void isr_pendsv(void)
