@@ -305,11 +305,7 @@ set(WISUN_MAIN_MCU_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/hal/hal_systick.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/hal/hal_wdt.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/hal/hal_rtc.c
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/ARM/startup/vc7300a_main.s
 )
-
-set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/wisun/mcu/vc7300a/ARM/startup/vc7300a_main.s PROPERTY LANGUAGE C)
 
 set(WISUN_MAIN_BOARD_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common/backtrace.c
@@ -325,6 +321,8 @@ set(WISUN_MAIN_BOARD_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common/syscalls.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common/system.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common/uart.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common/cortexm.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/common/vectors.c
 
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/lfs/lfs.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/board/lfs/lfs_util.c
@@ -455,7 +453,6 @@ set(WISUN_MAIN_SYSTEM_CORE_LIB_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/lib/ringbuf.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/lib/ringbuf16.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/lib/ringbufindex.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/lib/sensors.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/lib/settings.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/lib/trickle-timer.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/lib/bitmap.c
@@ -702,7 +699,6 @@ set(WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/netstack_shell_main.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/core/shell.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/core/serial-shell.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-ps.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-ping6.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-coap-gen.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-led.c
@@ -875,17 +871,12 @@ set(VCRTOS_CORE_API_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/core/api/event_api.cpp
 )
 
-set(VCRTOS_ZTIMER_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/core.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/overhead.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/vcrtos/source/ztimer/util.c
-)
-
 set(WISUN_MAIN_PORTING_VCRTOS_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/kernel_init.c
     ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/thread_arch.c
     ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/cpu_arch.c
     ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/ztimer_periph.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/porting/vcrtos/commands.c
 )
 
 set(WISUN_MAIN_PORTING_VCDRIVERS_SRCS
@@ -899,7 +890,6 @@ add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
 
 add_library(vcrtos_core STATIC ${VCRTOS_CORE_SRCS})
 add_library(vcrtos_core_api STATIC ${VCRTOS_CORE_API_SRCS})
-add_library(vcrtos_ztimer STATIC ${VCRTOS_ZTIMER_SRCS})
 
 add_library(wisun_main_porting_vcrtos STATIC ${WISUN_MAIN_PORTING_VCRTOS_SRCS})
 set_target_properties(wisun_main_porting_vcrtos PROPERTIES COMPILE_FLAGS ${WISUN_COMMON_CFLAGS})
@@ -1068,7 +1058,6 @@ list(APPEND PLATFORM_LIBS_list
     wisun_main_porting_vcrtos
     vcrtos_core
     vcrtos_core_api
-    vcrtos_ztimer
 )
 endif()
 

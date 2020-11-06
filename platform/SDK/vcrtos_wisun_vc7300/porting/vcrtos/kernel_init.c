@@ -52,19 +52,22 @@ void *thread_main_handler(void *arg)
     return NULL;
 }
 
+extern void process_paused_continue(void);
+
 void *thread_idle_handler(void *arg)
 {
     (void) arg;
 
     while (1)
     {
+        process_paused_continue();
         cpu_sleep(0);
     }
 
     return NULL;
 }
 
-char _main_stack[VCRTOS_CONFIG_MAIN_THREAD_STACK_SIZE];
+char _main_stack[1024];
 char _idle_stack[VCRTOS_CONFIG_IDLE_THREAD_STACK_SIZE];
 
 void kernel_init(void)

@@ -23,6 +23,9 @@
 #include <vcrtos/instance.h>
 #include <vcrtos/thread.h>
 
+extern uint32_t _sstack;
+extern uint32_t _estack;
+
 void _thread_exit(void)
 {
     thread_exit((void *)instance_get());
@@ -128,7 +131,6 @@ void thread_arch_stack_print(void)
 
 int thread_arch_isr_stack_usage(void)
 {
-#if 0
     uint32_t *ptr = &_sstack;
 
     while (((*ptr) == STACK_CANARY_WORD) && (ptr < &_estack))
@@ -139,9 +141,6 @@ int thread_arch_isr_stack_usage(void)
     ptrdiff_t num_used_words = &_estack - ptr;
 
     return num_used_words * sizeof(*ptr);
-#else
-    return 0;
-#endif
 }
 
 void *thread_arch_isr_stack_pointer(void)
@@ -152,11 +151,7 @@ void *thread_arch_isr_stack_pointer(void)
 
 void *thread_arch_isr_stack_start(void)
 {
-#if 0
     return (void *)&_sstack;
-#else
-    return NULL;
-#endif
 }
 
 __attribute__((naked)) __attribute__((used)) void isr_pendsv(void)
