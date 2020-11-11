@@ -36,8 +36,8 @@ void vcrtos_ps(void *instance)
     printf("\tpid | "
            "%-21s| "
            "%-9sQ | pri "
-           "| stack  ( used) | base addr  | current     "
-           "| runtime  | switches"
+           "| stack  ( used) | baseaddr | current   "
+           "| runtime | switches"
            "\r\n",
            "name", "state");
 
