@@ -23,6 +23,7 @@
 #include <vcrtos/cpu.h>
 #include <vcrtos/instance.h>
 #include <vcrtos/thread.h>
+#include <vcrtos/mutex.h>
 
 #if VCRTOS_CONFIG_ZTIMER_ENABLE
 #include <vcrtos/ztimer.h>
@@ -53,6 +54,8 @@ void *thread_main_handler(void *arg)
 }
 
 extern void process_paused_continue(void);
+extern unsigned char pollhandler_requested;
+extern mutex_t pollhandler_mutex;
 
 void *thread_idle_handler(void *arg)
 {
@@ -61,6 +64,10 @@ void *thread_idle_handler(void *arg)
     while (1)
     {
         process_paused_continue();
+        if (pollhandler_requested)
+        {
+            mutex_unlock(&pollhandler_mutex);
+        }
         cpu_sleep(0);
     }
 
