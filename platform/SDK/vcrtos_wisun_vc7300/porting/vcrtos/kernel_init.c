@@ -74,6 +74,7 @@ void *thread_idle_handler(void *arg)
     return NULL;
 }
 
+//char _main_stack[VCRTOS_CONFIG_MAIN_THREAD_STACK_SIZE];
 char _main_stack[1024];
 char _idle_stack[VCRTOS_CONFIG_IDLE_THREAD_STACK_SIZE];
 
