@@ -41,7 +41,7 @@ if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
     # wisun main linker script preprocessing
     add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/vcrtos_wisun_main.ld
         COMMAND ${CMAKE_C_COMPILER}
-        -E -P ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/mcu/vc7300a/ARM/linker/vc7300_main.ld.S
+        -E -P ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/mcu/vc7300a/ARM/linker/vc7300a_main_vcrtos.ld.S
         -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/include/autoconf.h
         -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/include/param.h
         -I${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun

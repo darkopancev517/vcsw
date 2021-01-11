@@ -540,6 +540,7 @@ set(WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/lookup3.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun-mac.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun-queue.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun-rpl.c
 )
 
 if (CONFIG_WISUN_DUAL_MODE)
@@ -548,16 +549,15 @@ list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SRCS
 )
 endif()
 
-list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/dhcp6c.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/dhcp6.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/dhcp6r.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun-rpl.c
+list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/dhcp6/dhcp6c.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/dhcp6/dhcp6.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/dhcp6/dhcp6r.c
 )
 
 if (CONFIG_WISUN_ROOT)
-list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/dhcp6s.c
+    list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/dhcp6/dhcp6s.c
 )
 endif()
 
@@ -706,6 +706,7 @@ set(WISUN_MAIN_SYSTEM_UTILS_SHELL_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-nbr.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-msend.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-udp-gen.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/utils/shell/commands/shell-tracert.c
 )
 
 if (CONFIG_WISUN_ROOT)
