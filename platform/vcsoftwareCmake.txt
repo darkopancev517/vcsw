@@ -95,8 +95,16 @@ foreach(TEST_LIB ${TEST_LIBS})
         target_link_libraries(${TEST_LIB}.elf -T${PROJECT_BINARY_DIR}/vcrtos_wisun_bootloader.ld)
     endif()
 
+    if(${TEST_LIB} MATCHES wisun_armpelion_bootloader)
+        target_link_libraries(${TEST_LIB}.elf -T${PROJECT_BINARY_DIR}/wisun_armpelion_bootloader.ld)
+    endif()
+
     if(${TEST_LIB} MATCHES vcrtos_wisun_main)
         target_link_libraries(${TEST_LIB}.elf -T${PROJECT_BINARY_DIR}/vcrtos_wisun_main.ld)
+    endif()
+
+    if(${TEST_LIB} MATCHES wisun_armpelion_main)
+        target_link_libraries(${TEST_LIB}.elf -T${PROJECT_BINARY_DIR}/wisun_armpelion_main.ld)
     endif()
 
     if(CMAKE_C_COMPILER_ID STREQUAL "GNU")

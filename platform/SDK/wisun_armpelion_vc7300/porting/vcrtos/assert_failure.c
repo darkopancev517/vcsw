@@ -16,7 +16,6 @@
  */
 
 #include <stdio.h>
-#include <vcdrivers/assert.h>
 
 void vcassert_failure(const char *file, unsigned line)
 {

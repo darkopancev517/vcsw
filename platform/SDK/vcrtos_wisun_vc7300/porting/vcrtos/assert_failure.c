@@ -15,9 +15,10 @@
  * Authors: Darko Pancev <darko.pancev@vertexcom.com>
  */
 
-#ifndef VCDRIVERS_PROJECT_CONFIG_H
-#define VCDRIVERS_PROJECT_CONFIG_H
+#include <stdio.h>
 
-#define VCDRIVERS_CONFIG_STDIOBASE_UART_DEV UART_DEV(1)
-
-#endif /* VCDRIVERS_PROJECT_CONFIG_H */
+void vcassert_failure(const char *file, unsigned line)
+{
+    printf("%s:%u => ASSERT FAILED\r\n", file, line);
+    while (1);
+}

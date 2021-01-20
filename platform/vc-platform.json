@@ -224,7 +224,7 @@
     },
     "os": {
       "name": "VCRTOS",
-      "version": "1.2.1"
+      "version": "1.2.2"
     },
     "sdk": {
       "name": "vcrtos_wisun_vc7300",
@@ -241,20 +241,20 @@
         "to": "SDK/vcrtos_wisun_vc7300/vcdrivers"
       },
       "vcrtos": {
-        "version": "1.2.0",
+        "version": "1.2.2",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/vcrtos.git",
-          "tag": "vcrtos-1.2.1"
+          "tag": "vcrtos-1.2.2"
         },
         "to": "SDK/vcrtos_wisun_vc7300/vcrtos"
       },
       "wisun": {
-        "version": "1.0.5",
+        "version": "1.0.2",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/wisun.git",
-          "tag": "vcrtos_wisun-1.0.0"
+          "tag": "vcrtos_wisun-1.0.2"
         },
         "to": "SDK/vcrtos_wisun_vc7300/wisun"
       },
@@ -266,6 +266,48 @@
           "tag": "v0.0.1"
         },
         "to": "SDK/vcrtos_wisun_vc7300/mbed-client-pal"
+      }
+    }
+  },
+  "wisun_armpelion_vc7300": {
+    "device": {
+      "name": "vc7300"
+    },
+    "os": {
+      "name": "VCRTOS",
+      "version": "1.2.2"
+    },
+    "sdk": {
+      "name": "wisun_armpelion_vc7300",
+      "version": "0.0.1"
+    },
+    "middleware": {
+      "vcrtos": {
+        "version": "1.2.2",
+        "from": {
+          "protocol": "git",
+          "location": "http://192.168.100.18:3000/vertexsw/vcrtos.git",
+          "tag": "vcrtos-1.2.2"
+        },
+        "to": "SDK/wisun_armpelion_vc7300/vcrtos"
+      },
+      "wisun": {
+        "version": "1.0.2",
+        "from": {
+          "protocol": "git",
+          "location": "http://192.168.100.18:3000/vertexsw/wisun.git",
+          "tag": "wisun_armpelion-1.0.2"
+        },
+        "to": "SDK/wisun_armpelion_vc7300/wisun"
+      },
+      "mbed-client-pal": {
+        "version": "0.0.1",
+        "from": {
+          "protocol": "git",
+          "location": "http://192.168.100.18:3000/vertexsw/mbed-client-pal.git",
+          "tag": "v0.0.1"
+        },
+        "to": "SDK/wisun_armpelion_vc7300/mbed-client-pal"
       }
     }
   }

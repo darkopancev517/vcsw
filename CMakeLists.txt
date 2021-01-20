@@ -13,6 +13,91 @@ set(VCSOFTWARE_COMMON_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/source/main.cpp
 )
 
+if(VCSOFTWARE_SDK MATCHES wisun_armpelion_vc7300)
+    SET(WISUN_ARMPELION_BOOTLOADER_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/dummy_bootloader.c)
+
+    add_definitions(-DVCRTOS_PROJECT_CONFIG_FILE="vcrtos-project-config.h")
+    add_definitions(-DVCRTOS_VERSION="${VCSOFTWARE_OS_VER}")
+
+    CREATE_TEST_LIBRARY(wisun_armpelion_bootloader "${WISUN_ARMPELION_BOOTLOADER_SRCS}" "")
+
+    # wisun bootloader linker script preprocessing
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/wisun_armpelion_bootloader.ld
+        COMMAND ${CMAKE_C_COMPILER}
+        -E -P ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/mcu/vc7300a/ARM/linker/vc7300a_bootloader.ld.S
+        -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/include/autoconf.h
+        -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/include/param.h
+        -o ${PROJECT_BINARY_DIR}/wisun_armpelion_bootloader.ld
+        VERBATIM
+    )
+    add_custom_target(wisun_armpelion_bootloader_linker ALL DEPENDS ${PROJECT_BINARY_DIR}/wisun_armpelion_bootloader.ld)
+    add_dependencies(wisun_armpelion_bootloader PLATFORM_BOOTLOADER_LIBS wisun_armpelion_bootloader_linker)
+    target_link_libraries(wisun_armpelion_bootloader PLATFORM_BOOTLOADER_LIBS)
+
+    SET(WISUN_ARMPELION_MAIN_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/dummy_main.c)
+
+    CREATE_TEST_LIBRARY(wisun_armpelion_main "${WISUN_ARMPELION_MAIN_SRCS}" "")
+
+    # wisun main linker script preprocessing
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/wisun_armpelion_main.ld
+        COMMAND ${CMAKE_C_COMPILER}
+        -E -P ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/mcu/vc7300a/ARM/linker/vc7300a_main_vcrtos.ld.S
+        -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/include/autoconf.h
+        -include ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/include/param.h
+        -I${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun
+        -o ${PROJECT_BINARY_DIR}/wisun_armpelion_main.ld
+        VERBATIM
+    )
+    add_custom_target(wisun_armpelion_main_linker ALL DEPENDS ${PROJECT_BINARY_DIR}/wisun_armpelion_main.ld)
+    add_dependencies(wisun_armpelion_main PLATFORM_LIBS wisun_armpelion_main_linker)
+    target_link_libraries(wisun_armpelion_main PLATFORM_LIBS)
+
+    # create compressed version of wisun_armpelion_main.bin
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/tools/easylzma/Linux/x86_64/elzma -k -s 65536 -v -f ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin && mv ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp && touch ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic && printf "vtxc" >> ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp
+        COMMENT "create compressed version of wisun_armpelion_main.bin"
+        VERBATIM
+    )
+    add_custom_target(wisun_armpelion_main_compressed ALL DEPENDS
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma
+    )
+
+    # padding wisun_armpelion_bootloader.bin to 16K
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_16K.bin
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/tools/scripts/padding_bootloader.sh ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader.bin ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_padding.bin && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader.bin ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_padding.bin > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_16K.bin && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_padding.bin
+        COMMENT "padding wisun_armpelion_bootloader.bin to 16KB"
+        VERBATIM
+    )
+    add_custom_target(wisun_armpelion_bootloader_16K ALL DEPENDS
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_16K.bin
+    )
+
+    # combine wisun_armpelion_bootloader_16K.bin with wisun_armpelion_main.bin
+
+    if (CONFIG_WISUN_ROOT)
+        set(WISUN_DEVICE_ROLE ROOT)
+    else()
+        set(WISUN_DEVICE_ROLE NODE)
+    endif()
+
+    add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_${WISUN_DEVICE_ROLE}.bin
+        COMMAND cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_16K.bin ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_${WISUN_DEVICE_ROLE}.bin
+        COMMENT "combine bootloader and main image as wisun_armpelion_${WISUN_DEVICE_ROLE}.bin"
+        VERBATIM
+    )
+
+    add_custom_target(wisun_armpelion_${WISUN_DEVICE_ROLE} ALL DEPENDS
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_16K.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin
+        ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_${WISUN_DEVICE_ROLE}.bin
+    )
+
+    # TODO: build firmware upgrade image
+
+endif()
+
 if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
     SET(VCRTOS_WISUN_BOOTLOADER_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/source/dummy_bootloader.c)
 
