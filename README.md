@@ -213,4 +213,43 @@ make
 
 ## vcrtos_wisun_vc7300
 
-TODO
+WISUN running with VCRTOS kernel on VC7300 (Sirius)
+
+Deploy the source code:
+```
+python platform/vc-platform.py --verbose deploy --target=vcrtos_wisun_vc7300
+```
+
+Generate wisun .config file:
+```
+cd platform/SDK/vcrtos_wisun_vc7300/wisun
+
+make config
+```
+
+Note: make sure to check 'Build with vcrtos (CMAKE)' option
+
+Note: back to vcsoftware root directory
+
+
+Generate build directory:
+```
+python platform/vc-platform.py generate --target=vcrtos_wisun_vc7300 --mconfig=./platform/SDK/vcrtos_wisun_vc7300/wisun/.config
+```
+
+Build project cmake build system:
+```
+cd __vcrtos_wisun_vc7300
+
+mkdir build && cd build
+
+cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./../platform/SDK/vcrtos_wisun_vc7300/ARMGCC.cmake
+```
+
+Compile project:
+```
+make
+```
+
+
+

@@ -250,11 +250,11 @@
         "to": "SDK/vcrtos_wisun_vc7300/vcrtos"
       },
       "wisun": {
-        "version": "1.0.2",
+        "version": "1.0.3",
         "from": {
           "protocol": "git",
           "location": "http://192.168.100.18:3000/vertexsw/wisun.git",
-          "tag": "vcrtos_wisun-1.0.2"
+          "tag": "vcrtos_wisun-1.0.3"
         },
         "to": "SDK/vcrtos_wisun_vc7300/wisun"
       },
