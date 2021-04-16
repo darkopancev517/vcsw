@@ -52,9 +52,15 @@ if(VCSOFTWARE_SDK MATCHES wisun_armpelion_vc7300)
     add_dependencies(wisun_armpelion_main PLATFORM_LIBS wisun_armpelion_main_linker)
     target_link_libraries(wisun_armpelion_main PLATFORM_LIBS)
 
+    if (UNIX AND NOT APPLE)
+        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Linux/x86_64)
+    else()
+        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Darwin)
+    endif()
+
     # create compressed version of wisun_armpelion_main.bin
     add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma
-        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/tools/easylzma/Linux/x86_64/elzma -k -s 65536 -v -f ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin && mv ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp && touch ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic && printf "vtxc" >> ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp
+        COMMAND ${ELZMA_PATH}/elzma -k -s 65536 -v -f ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin && mv ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp && touch ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic && printf "vtxc" >> ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin.lzma && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.tmp
         COMMENT "create compressed version of wisun_armpelion_main.bin"
         VERBATIM
     )
@@ -137,9 +143,15 @@ if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
     add_dependencies(vcrtos_wisun_main PLATFORM_LIBS vcrtos_wisun_main_linker)
     target_link_libraries(vcrtos_wisun_main PLATFORM_LIBS)
 
+    if (UNIX AND NOT APPLE)
+        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Linux/x86_64)
+    else()
+        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Darwin)
+    endif()
+
     # create compressed version of vcrtos_wisun_main.bin
     add_custom_command(OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma
-        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Linux/x86_64/elzma -k -s 65536 -v -f ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin && mv ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp && touch ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic && printf "vtxc" >> ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp
+        COMMAND ${ELZMA_PATH}/elzma -k -s 65536 -v -f ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin && mv ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp && touch ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic && printf "vtxc" >> ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic && cat ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp > ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin.lzma && rm ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.magic ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.tmp
         COMMENT "create compressed version of vcrtos_wisun_main.bin"
         VERBATIM
     )

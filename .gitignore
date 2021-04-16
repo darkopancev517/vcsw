@@ -48,10 +48,11 @@ platform/SDK/vcrtos_contiki_vc7300/vcrtos/
 platform/SDK/vcrtos_contiki_vc7300/contiki-ng/
 platform/SDK/vcrtos_contiki_vc7300/mbed-client-pal/
 
-platform/SDK/vcrtos_wisun_vc7300/vcdrivers/
 platform/SDK/vcrtos_wisun_vc7300/vcrtos/
 platform/SDK/vcrtos_wisun_vc7300/wisun/
-platform/SDK/vcrtos_wisun_vc7300/mbed-client-pal/
+
+platform/SDK/wisun_armpelion_vc7300/vcrtos/
+platform/SDK/wisun_armpelion_vc7300/wisun/
 
 platform/SDK/vcrtos_contiki_linux/vcdrivers/
 platform/SDK/vcrtos_contiki_linux/vcrtos/
@@ -66,6 +67,7 @@ platform/vcrtos_linux.txt
 platform/vcrtos_vc7300.txt
 platform/vcrtos_contiki_vc7300.txt
 platform/vcrtos_wisun_vc7300.txt
+platform/wisun_armpelion_vc7300.txt
 platform/vcrtos_contiki_linux.txt
 platform/bare_vc7300.txt
 platform/freertos_vc7300.txt
