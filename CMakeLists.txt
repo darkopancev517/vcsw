@@ -53,9 +53,9 @@ if(VCSOFTWARE_SDK MATCHES wisun_armpelion_vc7300)
     target_link_libraries(wisun_armpelion_main PLATFORM_LIBS)
 
     if (UNIX AND NOT APPLE)
-        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Linux/x86_64)
+        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/tools/easylzma/Linux/x86_64)
     else()
-        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/vcrtos_wisun_vc7300/wisun/tools/easylzma/Darwin)
+        set(ELZMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/platform/SDK/wisun_armpelion_vc7300/wisun/tools/easylzma/Darwin)
     endif()
 
     # create compressed version of wisun_armpelion_main.bin
@@ -93,12 +93,13 @@ if(VCSOFTWARE_SDK MATCHES wisun_armpelion_vc7300)
         COMMENT "combine bootloader and main image as wisun_armpelion_${WISUN_DEVICE_ROLE}.bin"
         VERBATIM
     )
-
     add_custom_target(wisun_armpelion_${WISUN_DEVICE_ROLE} ALL DEPENDS
         ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_bootloader_16K.bin
         ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_main.bin
         ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/wisun_armpelion_${WISUN_DEVICE_ROLE}.bin
     )
+
+    add_dependencies(wisun_armpelion_${WISUN_DEVICE_ROLE} wisun_armpelion_bootloader_16K wisun_armpelion_main_compressed)
 
     # TODO: build firmware upgrade image
 
@@ -184,12 +185,13 @@ if(VCSOFTWARE_SDK MATCHES vcrtos_wisun_vc7300)
         COMMENT "combine bootloader and main image as vcrtos_wisun_${WISUN_DEVICE_ROLE}.bin"
         VERBATIM
     )
-
     add_custom_target(vcrtos_wisun_${WISUN_DEVICE_ROLE} ALL DEPENDS
         ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_bootloader_16K.bin
         ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_main.bin
         ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/vcrtos_wisun_${WISUN_DEVICE_ROLE}.bin
     )
+
+    add_dependencies(vcrtos_wisun_${WISUN_DEVICE_ROLE} vcrtos_wisun_bootloader_16K vcrtos_wisun_main_compressed)
 
     # TODO: build firmware upgrade image
 

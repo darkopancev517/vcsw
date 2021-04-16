@@ -525,10 +525,11 @@ list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_SRCS
 
 endif() # if (CONFIG_CONTIKI_WITH_IPV6)
 
-
+list(APPEND WISUN_MAIN_SYSTEM_CORE_NET_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/ntp/ntp.c
+)
 
 set(WISUN_MAIN_SYSTEM_CORE_NET_WISUN_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/ntp.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/dh1cf.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/framewisun-ie.c
     ${CMAKE_CURRENT_SOURCE_DIR}/wisun/system/contiki/core/net/wisun/wisun-packet.c
